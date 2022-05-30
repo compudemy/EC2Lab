@@ -25,7 +25,6 @@ This it’s what the AWS console looks like:
 
 ![image](https://user-images.githubusercontent.com/103466963/171038756-e3121973-ae6a-4626-8ac0-dd7748bdb73c.png)
 
-![image](https://user-images.githubusercontent.com/103466963/171038849-6ab7cafb-bd50-4695-9e6f-83ff65338605.png)
 
 Step 4
 Click on EC2.
@@ -62,14 +61,12 @@ Note: Never leave the default 8gb, if you want to be on the free tier limits you
 
 ![image](https://user-images.githubusercontent.com/103466963/171039288-ce960a42-4606-4f35-a83d-80bce91a1a4c.png)
 
-![image](https://user-images.githubusercontent.com/103466963/171039400-03b44ddd-90e9-4bb1-8abe-7c2f3dd1c038.png)
 
 Step 11
 You should be on the Tags screen.
 
 ![image](https://user-images.githubusercontent.com/103466963/171039543-8bb7d3b2-a184-4926-955c-92cc9134447c.png)
 
-![image](https://user-images.githubusercontent.com/103466963/171039580-49ac3d20-c7db-487d-9222-ba0047a6e65c.png)
 
 Step 12
 Let’s click on the button “Add Tag” and on the key column type “Name” and on the value type the name that you want to give to your instance and click on next.
@@ -110,6 +107,63 @@ Click on “Launch Instances.”
 If everything goes well you are going to see the next screen, click on the id to view it on the dashboard.
 
 ![image](https://user-images.githubusercontent.com/103466963/171040100-1a778842-8b03-495e-8e0f-f75499e469ff.png)
+
+
+![image](https://user-images.githubusercontent.com/103466963/171041246-b7386d4d-1ad7-45b7-93d8-e16152ae4302.png)
+
+Step 19
+Access to the instance
+
+On the image above you can see the public IP of the instance. Save it, since we are going to use for access purposes. To access using Linux or Mac, you need to change the permissions of the key before using it.
+
+![image](https://user-images.githubusercontent.com/103466963/171041291-a3bc4481-61aa-4704-a03c-0117a47abf26.png)
+
+For copy/paste purposes:
+
+chmod 400 YourKeyName.pem
+Time to get connected to the instance. You need to know that since we have launched an Ubuntu Instance, the user it’s Ubuntu, you can check this information on the AMI information.
+
+![image](https://user-images.githubusercontent.com/103466963/171041348-8aa3bdd7-8ec1-40bd-bef6-e0a27b6ea328.png)
+
+Since is the first time you are going to get connected it’s going to ask you if you want to trust on the remote host (your instance) type “yes” and press enter, and you are going to get in.
+
+If you are using windows depends on the tool that you are using, let us PuTTY, this tool doesn’t accept pem files, so we need to convert the file using a tool provided by PuTTY: PuTTYgen.
+
+![image](https://user-images.githubusercontent.com/103466963/171041382-6251cff1-9b34-4053-982e-5c0acfccc28a.png)
+
+Click on load and choose your pem file and you are going to see the loaded key, just press “save private key.”
+
+It’s going to ask you if you want to add a passphrase (another layer of security) just press yes to continue without it.
+
+![image](https://user-images.githubusercontent.com/103466963/171041415-ad212793-c9ad-43e4-ba5c-98cb59199d5b.png)
+
+And save the file, this it’s going to create a file with the “.ppk” extension.
+Now let us it to get connected using PuTTY
+
+![image](https://user-images.githubusercontent.com/103466963/171041435-d558934f-dd6d-4db2-a14a-ba45c7a6fee9.png)
+
+On hostname type
+ubuntu@IPADDRESS
+
+![image](https://user-images.githubusercontent.com/103466963/171041472-4be0943b-c121-4e80-8f1a-639d4d007053.png)
+
+Now like on the image above click on the + on the left to SSH and select Auth, there click on the browse button and select the ppk file created by PuTTYgen and click open.
+
+![image](https://user-images.githubusercontent.com/103466963/171041499-69013cba-81f6-4b08-9ed9-cdebf639f131.png)
+
+Same as happened on Linux it’s going to ask you if you want to trust the host, just click yes, and you will be there.
+
+![image](https://user-images.githubusercontent.com/103466963/171041534-4b137efc-433c-4371-a79a-adab72ec1ab1.png)
+
+![image](https://user-images.githubusercontent.com/103466963/171041570-415b50a3-212f-4c36-b87d-7984e1d010c1.png)
+
+
+
+And you are in
+With this you know the basics of create EC2 instances, some concepts, you know how to launch an instance and how to access to it
+
+
+
 
 
 
