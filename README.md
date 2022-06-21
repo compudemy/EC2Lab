@@ -1,10 +1,21 @@
 # EC2Lab
-<img width="799" alt="Screen Shot 2022-05-30 at 11 58 24" src="https://user-images.githubusercontent.com/103466963/171032750-819a7b79-e4eb-42a8-ac31-e354f119e75b.png">
 
-<img width="811" alt="Screen Shot 2022-05-30 at 11 59 26" src="https://user-images.githubusercontent.com/103466963/171032796-6982138a-dc77-440f-b975-5efbea15a28c.png">
+AWS EC2 Use Case
+Next, in this AWS EC2 Tutorial, let’s understand the whole EC2 instance creation process through a use case in which we’ll be creating an Ubuntu instance for a test environment.
 
-<img width="815" alt="Screen Shot 2022-05-30 at 12 00 21" src="https://user-images.githubusercontent.com/103466963/171032834-6184457e-0c97-4d4f-9a5d-6b1a2f22f98b.png">
-<img width="813" alt="Screen Shot 2022-05-30 at 12 01 00" src="https://user-images.githubusercontent.com/103466963/171032858-ddb4cfe7-1dad-4726-8463-f6344cd99c44.png">
-<img width="794" alt="Screen Shot 2022-05-30 at 12 01 57" src="https://user-images.githubusercontent.com/103466963/171032877-79497a9d-e5a7-4a20-9dc4-a462a4ee1fec.png">
-<img width="863" alt="Screen Shot 2022-05-30 at 12 02 44" src="https://user-images.githubusercontent.com/103466963/171032913-338f7e6a-0b71-4ebf-96fd-3f95c9cabb2a.png">
-<img width="830" alt="Screen Shot 2022-05-30 at 12 03 35" src="https://user-images.githubusercontent.com/103466963/171032942-4f7781f6-67bf-4b38-98f0-1fcd2d2bf34f.png">
+Login to AWS Management Console.
+
+![image](https://user-images.githubusercontent.com/103466963/174836020-1e1bb9b1-2227-43a9-a21e-0bdf633d75d7.png)
+
+2. Select your preferred Region. Select a region from the drop-down, the selection of the region can be done on the basis of the criteria discussed earlier in the blog.
+
+![image](https://user-images.githubusercontent.com/103466963/174837374-d06bacfc-200f-4081-855b-dc68face4d4e.png)
+
+
+3. Select EC2 Service Click EC2 under Compute section. This will take you to the EC2 dashboard.
+
+![image](https://user-images.githubusercontent.com/103466963/174837454-90de9b31-5dc0-4a7e-a86f-1cb3484fe1c7.png)
+
+4. Click Launch Instance.
+
+5. Select an AMI: because you require a Linux instance, in the row for the basic 64-bit Ubuntu AMI, click Select.
