@@ -62,18 +62,274 @@ Next, in this AWS EC2 Tutorial, select the option ‘Create a new key pair’ an
 
 
 
+How to create an AWS EC2 instance using AWS CLI:
+Step 1: Get Amazon Linux 2 latest AMI ID.
+## Get Amazon Linux 2 latest AMI ID
+AWS_AMI_ID=$(aws ec2 describe-images \
+--owners 'amazon' \
+--filters 'Name=name,Values=amzn2-ami-hvm-2.0.????????-x86_64-gp2' 'Name=state,Values=available' \
+--query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
+--output 'text')
+1
+2
+3
+4
+5
+6
+## Get Amazon Linux 2 latest AMI ID
+AWS_AMI_ID=$(aws ec2 describe-images \
+--owners 'amazon' \
+--filters 'Name=name,Values=amzn2-ami-hvm-2.0.????????-x86_64-gp2' 'Name=state,Values=available' \
+--query 'sort_by(Images, &CreationDate)[-1].[ImageId]' \
+--output 'text')
+Step 2: Create a key-pair.
+## Create a key-pair
+aws ec2 create-key-pair \
+--key-name myvpc-keypair \
+--query 'KeyMaterial' \
+--output text > myvpc-keypair.pem
+1
+2
+3
+4
+5
+## Create a key-pair
+aws ec2 create-key-pair \
+--key-name myvpc-keypair \
+--query 'KeyMaterial' \
+--output text > myvpc-keypair.pem
+Step 3: Create user data for a LAMP stack.
+## Create user data for a LAMP stack
+vi myuserdata.txt
+-----------------------
+#!/bin/bash
+sudo yum update -y
+sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+sudo yum install -y httpd mariadb-server
+sudo systemctl start httpd
+sudo systemctl is-enabled httpd
+-----------------------
+:wq
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+## Create user data for a LAMP stack
+vi myuserdata.txt
+-----------------------
+#!/bin/bash
+sudo yum update -y
+sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
+sudo yum install -y httpd mariadb-server
+sudo systemctl start httpd
+sudo systemctl is-enabled httpd
+-----------------------
+:wq
+Step 4: Create an EC2 instance.
+## Create an EC2 instance
+AWS_EC2_INSTANCE_ID=$(aws ec2 run-instances \
+--image-id $AWS_AMI_ID \
+--instance-type t2.micro \
+--key-name myvpc-keypair \
+--monitoring "Enabled=false" \
+--security-group-ids $AWS_CUSTOM_SECURITY_GROUP_ID \
+--subnet-id $AWS_SUBNET_PUBLIC_ID \
+--user-data file://myuserdata.txt \
+--private-ip-address 10.0.1.10 \
+--query 'Instances[0].InstanceId' \
+--output text)
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+## Create an EC2 instance
+AWS_EC2_INSTANCE_ID=$(aws ec2 run-instances \
+--image-id $AWS_AMI_ID \
+--instance-type t2.micro \
+--key-name myvpc-keypair \
+--monitoring "Enabled=false" \
+--security-group-ids $AWS_CUSTOM_SECURITY_GROUP_ID \
+--subnet-id $AWS_SUBNET_PUBLIC_ID \
+--user-data file://myuserdata.txt \
+--private-ip-address 10.0.1.10 \
+--query 'Instances[0].InstanceId' \
+--output text)
+Step 5: Add a tag to the ec2 instance.
+## Add a tag to the ec2 instance
+aws ec2 create-tags \
+--resources $AWS_EC2_INSTANCE_ID \
+--tags "Key=Name,Value=myvpc-ec2-instance"
+1
+2
+3
+4
+## Add a tag to the ec2 instance
+aws ec2 create-tags \
+--resources $AWS_EC2_INSTANCE_ID \
+--tags "Key=Name,Value=myvpc-ec2-instance"
+Step 6: Check if the instance is running.
+## Check if the instance is running
+aws ec2 describe-instance-status \
+--instance-ids $AWS_EC2_INSTANCE_ID --output text
+1
+2
+3
+## Check if the instance is running
+aws ec2 describe-instance-status \
+--instance-ids $AWS_EC2_INSTANCE_ID --output text
+Step 7: Get the public ip address of your instance.
+## Get the public ip address of your instance
+AWS_EC2_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances \
+--query "Reservations[*].Instances[*].PublicIpAddress" \
+--output=text) &&
+echo $AWS_EC2_INSTANCE_PUBLIC_IP
+1
+2
+3
+4
+5
+## Get the public ip address of your instance
+AWS_EC2_INSTANCE_PUBLIC_IP=$(aws ec2 describe-instances \
+--query "Reservations[*].Instances[*].PublicIpAddress" \
+--output=text) &&
+echo $AWS_EC2_INSTANCE_PUBLIC_IP
+Step 8: Try to connect to the instance.
+## Try to connect to the instance
+chmod 400 myvpc-keypair.pem
+ssh -i myvpc-keypair.pem ec2-user@$AWS_EC2_INSTANCE_PUBLIC_IP
+exit
+1
+2
+3
+4
+## Try to connect to the instance
+chmod 400 myvpc-keypair.pem
+ssh -i myvpc-keypair.pem ec2-user@$AWS_EC2_INSTANCE_PUBLIC_IP
+exit
+Note: You can check your web server by opening your public IP in your favorite browser.
 
+Cleanup:
+Shell
+## Cleanup
+## Terminate the ec2 instance
+aws ec2 terminate-instances \
+--instance-ids $AWS_EC2_INSTANCE_ID &&
+rm -f myuserdata.txt
 
+## Delete key pair
+aws ec2 delete-key-pair \
+--key-name myvpc-keypair &&
+rm -f myvpc-keypair.pem
 
+## Delete custom security group
+aws ec2 delete-security-group \
+--group-id $AWS_CUSTOM_SECURITY_GROUP_ID
 
+## Delete internet gateway
+aws ec2 detach-internet-gateway \
+--internet-gateway-id $AWS_INTERNET_GATEWAY_ID \
+--vpc-id $AWS_VPC_ID &&
+aws ec2 delete-internet-gateway \
+--internet-gateway-id $AWS_INTERNET_GATEWAY_ID
 
+## Delete the custom route table
+aws ec2 disassociate-route-table \
+--association-id $AWS_ROUTE_TABLE_ASSOID &&
+aws ec2 delete-route-table \
+--route-table-id $AWS_CUSTOM_ROUTE_TABLE_ID
 
+## Delete the public subnet
+aws ec2 delete-subnet \
+--subnet-id $AWS_SUBNET_PUBLIC_ID
 
+## Delete the vpc
+aws ec2 delete-vpc \
+--vpc-id $AWS_VPC_ID
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+## Cleanup
+## Terminate the ec2 instance
+aws ec2 terminate-instances \
+--instance-ids $AWS_EC2_INSTANCE_ID &&
+rm -f myuserdata.txt
+ 
+## Delete key pair
+aws ec2 delete-key-pair \
+--key-name myvpc-keypair &&
+rm -f myvpc-keypair.pem
+ 
+## Delete custom security group
+aws ec2 delete-security-group \
+--group-id $AWS_CUSTOM_SECURITY_GROUP_ID
+ 
+## Delete internet gateway
+aws ec2 detach-internet-gateway \
+--internet-gateway-id $AWS_INTERNET_GATEWAY_ID \
+--vpc-id $AWS_VPC_ID &&
+aws ec2 delete-internet-gateway \
+--internet-gateway-id $AWS_INTERNET_GATEWAY_ID
+ 
+## Delete the custom route table
+aws ec2 disassociate-route-table \
+--association-id $AWS_ROUTE_TABLE_ASSOID &&
+aws ec2 delete-route-table \
+--route-table-id $AWS_CUSTOM_ROUTE_TABLE_ID
+ 
+## Delete the public subnet
+aws ec2 delete-subnet \
+--subnet-id $AWS_SUBNET_PUBLIC_ID
+ 
+## Delete the vpc
+aws ec2 delete-vpc \
+--vpc-id $AWS_VPC_ID
+Hope you get the idea of using AWS CLI. There is some limitation for using AWS CLI like passing output values of one code block to input value of another code block. Though this can be overcome by using variables like it has been done in the last two blogs. In my experience AWS CLI can be used for ad-hoc purpose. But if you want to build your infrastructure with DevOps methodology, SDK like Python Boto3 or external tools like terraform has much better options.
 
-
-
-
-
-
-
-
+In the next blog post, we will start with a new AWS service. You can explore other AWS service related CLI using below link.
