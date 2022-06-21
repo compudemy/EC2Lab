@@ -32,3 +32,14 @@ Select t2.micro instance, which is free tier eligible.
 Configure all the details and then click on add storage
 
 ![image](https://user-images.githubusercontent.com/103466963/174842869-2b229e5d-9e33-4475-9c0c-9a7405a8073f.png)
+
+8. Add Storage
+
+![image](https://user-images.githubusercontent.com/103466963/174843215-fac0e7fe-7a3c-42f2-be7f-46cc94b8234d.png)
+
+![image](https://user-images.githubusercontent.com/103466963/174843340-4069364c-3e2f-492e-9f68-94a24dc7ec91.png)
+
+
+
+
+
