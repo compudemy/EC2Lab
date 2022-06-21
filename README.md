@@ -37,7 +37,41 @@ Configure all the details and then click on add storage
 
 ![image](https://user-images.githubusercontent.com/103466963/174843215-fac0e7fe-7a3c-42f2-be7f-46cc94b8234d.png)
 
-![image](https://user-images.githubusercontent.com/103466963/174843340-4069364c-3e2f-492e-9f68-94a24dc7ec91.png)
+9. Tag an Instance
+
+Type a name for your AWS EC2 instance in the value box. This name, more correctly known as a tag, will appear in the console when the instance launches. It makes it easy to keep track of running machines in a complex environment. Use a name that you can easily recognize and remember.
+
+![image](https://user-images.githubusercontent.com/103466963/174843817-740cd401-0a40-4c23-9eef-7c68e7e9f748.png)
+
+10. Create a Security Group
+
+![image](https://user-images.githubusercontent.com/103466963/174844047-e7c8acda-b94f-43b8-9439-37d7f7c9f407.png)
+
+11. Review and Launch an Instance
+
+Verify the details that you have configured to launch an instance.
+
+![image](https://user-images.githubusercontent.com/103466963/174844252-a96c59fa-21c0-4ca6-a101-4b9c61923bf5.png)
+
+12. Create a Key Pair & launch an Instance
+
+Next, in this AWS EC2 Tutorial, select the option ‘Create a new key pair’ and give a name of a key pair. After that, download it in your system and save it for future use.
+
+![image](https://user-images.githubusercontent.com/103466963/174844446-e43e1c25-4580-4a13-af35-97fb941a44fe.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
