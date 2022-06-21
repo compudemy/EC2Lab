@@ -62,7 +62,7 @@ Next, in this AWS EC2 Tutorial, select the option ‘Create a new key pair’ an
 
 
 
-How to create an AWS EC2 instance using AWS CLI:
+**How to create an AWS EC2 instance using AWS CLI:**
 Step 1: Get Amazon Linux 2 latest AMI ID.
 ## Get Amazon Linux 2 latest AMI ID
 AWS_AMI_ID=$(aws ec2 describe-images \
